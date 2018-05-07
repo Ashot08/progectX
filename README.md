@@ -1,2 +1,2 @@
 # progectX
-abstract project to php-practice
+<p>Welcome! There is simple abstract PHP website at Yii2</p>
