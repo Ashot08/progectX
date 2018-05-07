@@ -7,9 +7,6 @@ use yii\db\Migration;
  */
 class m180420_024851_userAccount extends Migration
 {
-    /**
-     * {@inheritdoc}
-     */
     public function safeUp()
     {
         $this->createTable(
@@ -35,28 +32,10 @@ class m180420_024851_userAccount extends Migration
             'account_number');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function safeDown()
     {
         echo "m180420_024851_userAccount cannot be reverted.\n";
 
         return false;
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m180420_024851_userAccount cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

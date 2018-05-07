@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php ActiveForm::end(); ?>
 
-    <?php $form = ActiveForm::begin(['options' => ['method' => 'post'], 'action' => ['post/index']]);?>
+    <?php $form = ActiveForm::begin(['options' => ['method' => 'post'], 'action' => ['home /index']]);?>
         <div class="col-lg-offset-1 col-lg-11">
             <?= Html::submitInput('Зарегистрироваться', ['class' => 'btn btn-primary']) ?>
         </div>

@@ -14,7 +14,7 @@ use Yii;
 use app\models\RegistrationForm;
 use app\models\User;
 
-class PostController extends AppController
+class HomeController extends AppController
 {
     //public $layout = 'basic';
 
@@ -25,11 +25,8 @@ class PostController extends AppController
             if($model->validate()){
                 if ($user = $model->register()) {
                     if (Yii::$app->getUser()->login($user)) {
-
                         Yii::$app->session->setFlash('success', 'Пользователь успешно зарегистрирован');
-
                         return $this->goHome();
-                        //return $this->render('index');
                     }
                 }
             }
@@ -45,31 +42,6 @@ class PostController extends AppController
         }
     }
 
-//    public function actionShow()
-//    {
-//        $model = new RegistrationForm();
-//        $user = Yii::$app->getUser()->getId();
-//        $accountNumber = UserAccount::find()->where(['user_id' => [$user]])->one()['account_number'];
-//
-////        if (!\Yii::$app->user->can('watch show')) {
-////            Yii::$app->session->setFlash('success', 'Ты не юзер, и уж явно не админ');
-////            return $this->goBack();
-////        }
-////        else{
-////            $user = Yii::$app->getUser()->getId();
-////            $accountNumber = UserAccount::find()->where(['user_id' => [$user]])->one()['account_number'];
-////
-////            return $this->render('show', compact('accountNumber'));
-////        }
-//
-//        if(!\Yii::$app->user->can('watch show')){
-//            Yii::$app->session->setFlash('success', 'Ты не юзер, и уж явно не админ');
-//            return $this->goBack();
-//        }
-//        else{
-//            return $this->render('show', compact('accountNumber', $model));
-//        }
-//    }
     public function actionShow()
     {
         $model = new addAccount();
@@ -92,25 +64,14 @@ class PostController extends AppController
                 else {
 //                    Yii::$app->session->setFlash('error', 'Ошибка, проверьте правильность заполнения форм');
                 }
-                //return $this->render('show', compact('accountNumber', 'model'));
             }
             if (!empty($_POST['delete'])&&!empty($_POST['checkedAccount'])){
                 $userAccount = UserAccount::find()->where(['account_number' => $_POST['checkedAccount']])->one();
                 $account = Account::find()->where(['account_number' => $_POST['checkedAccount']])->one();
                 $userAccount->delete();
                 $account->delete();
-                //return $this->goHome();
             }
         }
         return $this->render('show', compact('accountNumber', 'model', 'user'));
-
-
-//        if(!\Yii::$app->user->can('watch show')){
-//            Yii::$app->session->setFlash('success', 'Ты не юзер, и уж явно не админ');
-//            return $this->goBack();
-//        }
-//        else{
-//            return $this->render('show', compact('accountNumber', $model));
-//        }
     }
 }

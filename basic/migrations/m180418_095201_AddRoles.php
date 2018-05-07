@@ -7,9 +7,6 @@ use yii\db\Migration;
  */
 class m180418_095201_AddRoles extends Migration
 {
-    /**
-     * {@inheritdoc}
-     */
     public function safeUp()
     {
         $rbac = \Yii::$app->authManager;
@@ -29,11 +26,6 @@ class m180418_095201_AddRoles extends Migration
         $rbac->addChild($admin, $user);
         $rbac->addChild($user, $guest);
 
-//        $rbac->assign(
-//            $admin,
-//            \app\models\User::findOne([
-//                'username' => 'admin'])->id
-//        );
         $watchShow = $rbac->createPermission('watch show');
         $watchShow->description = 'просмотр страницы Show';
         $rbac->add($watchShow);
@@ -41,28 +33,10 @@ class m180418_095201_AddRoles extends Migration
 
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function safeDown()
     {
         echo "m180418_095201_AddRoles cannot be reverted.\n";
 
         return true;
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m180418_095201_AddRoles cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

@@ -7,9 +7,6 @@ use yii\db\Migration;
  */
 class m180418_043334_AddUserTable extends Migration
 {
-    /**
-     * {@inheritdoc}
-     */
     public function safeUp()
     {
         $this->createTable('{{%user}}', [
@@ -21,9 +18,6 @@ class m180418_043334_AddUserTable extends Migration
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function safeDown()
     {
         echo "m180418_043334_AddUserTable cannot be reverted.\n";
@@ -31,18 +25,4 @@ class m180418_043334_AddUserTable extends Migration
         return false;
     }
 
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m180418_043334_AddUserTable cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }
