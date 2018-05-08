@@ -24,5 +24,4 @@ class m180418_043334_AddUserTable extends Migration
 
         return false;
     }
-
 }

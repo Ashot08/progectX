@@ -61,13 +61,8 @@ class RegistrationForm extends Model
 
                 $rbac = Yii::$app->authManager;
                 $userRole = $rbac->getRole('user');
-
                 $rbac->assign($userRole, $user->id);
 
-    //            $account = new Account();
-    //            $account->getAccount();
-    //            $userAccount = new UserAccount();
-    //            $userAccount->getUserAccount($user->id,$account->account_number);
                 $transaction->commit();
                 return $user;
             }

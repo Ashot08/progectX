@@ -16,9 +16,6 @@ use yii\web\IdentityInterface;
 
 class UserAccount extends ActiveRecord
 {
-//    public $account_number;
-//    public $user_id;
-
     public static function tableName()
     {
         return 'user_account';
