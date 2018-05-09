@@ -8,6 +8,7 @@
 
 namespace app\models;
 
+use Faker\Provider\DateTime;
 use yii\db\ActiveRecord;
 use yii\base\Model;
 use Yii;
@@ -28,7 +29,8 @@ class Account extends ActiveRecord
     }
     public function setOpeningDate()
     {
-        $this->opening_date = date('r');
+        $date = new \DateTime('NOW');
+        $this->opening_date = $date->format('c');
     }
 
     public function getAccountNumber()

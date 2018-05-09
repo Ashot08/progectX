@@ -9,6 +9,7 @@
 namespace app\controllers;
 use app\models\Account;
 use app\models\AddAccount;
+use app\models\Transaction;
 use app\models\UserAccount;
 use Yii;
 use app\models\RegistrationForm;
@@ -55,8 +56,9 @@ class HomeController extends AppController
         else{
             $user = Yii::$app->getUser()->getId();
             $accountNumber = UserAccount::find()->where(['user_id' => [$user]])->all();
+
             if($model->load(Yii::$app->request->post())) {
-                if ($model->validate($model->accountName) && empty($_POST['delete'])) {
+                if ($model->validate($model->accountName) && empty($_POST['delete']) && count($accountNumber) < 5) {
                     $model->addUserAccount();
                     Yii::$app->session->setFlash('success', 'Счет успешно зарегистрирован');
                     $this->refresh();
@@ -68,10 +70,34 @@ class HomeController extends AppController
             if (!empty($_POST['delete'])&&!empty($_POST['checkedAccount'])){
                 $userAccount = UserAccount::find()->where(['account_number' => $_POST['checkedAccount']])->one();
                 $account = Account::find()->where(['account_number' => $_POST['checkedAccount']])->one();
+
                 $userAccount->delete();
                 $account->delete();
+                $this->refresh();
             }
         }
         return $this->render('show', compact('accountNumber', 'model', 'user'));
+    }
+
+    public function actionTransaction()
+    {
+        if (!\Yii::$app->user->can('watch show')) {
+            Yii::$app->session->setFlash('success', 'Ты не юзер, и уж явно не админ');
+            return $this->goBack();
+        }
+        else{
+            $user = Yii::$app->getUser()->getId();
+            $model = new Transaction();
+            $accountNumber = UserAccount::find()->where(['user_id' => [$user]])->all();
+
+            if(!empty($_POST['recipient']) && !empty($_POST['transaction_value'])) {
+                $model->transact( $_POST['checkedAccount'], $_POST['recipient'], $_POST['transaction_value'], true);
+                $this->refresh();
+            }
+            else{
+                //return $this->goBack();
+            }
+        }
+        return $this->render('transaction' , compact('accountNumber', 'model'));
     }
 }

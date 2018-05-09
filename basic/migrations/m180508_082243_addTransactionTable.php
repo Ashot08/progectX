@@ -17,16 +17,25 @@ class m180508_082243_addTransactionTable extends Migration
             [
                 'transaction_number' => $this->primaryKey()->comment('Primary key'),
                 'account_number' => $this->integer('16'),
+                'recipient' => $this->integer('16'),
                 'transaction_type' => $this->boolean(),
-                'transaction_value' => $this->integer()
+                'transaction_value' => $this->integer()->notNull(),
+                'date' => $this->dateTime()
             ]
         );
-        $this->addForeignKey(
-            'account_number',
-            'transaction',
-            'account_number',
-            'account',
-            'account_number');
+//        $this->addForeignKey(
+//            'account_number',
+//            'transaction',
+//            'account_number',
+//            'account',
+//            'account_number');
+//
+//        $this->addForeignKey(
+//            'recipient',
+//            'transaction',
+//            'recipient',
+//            'account',
+//            'account_number');
     }
 
     /**
