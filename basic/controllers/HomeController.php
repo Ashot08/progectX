@@ -89,15 +89,35 @@ class HomeController extends AppController
             $user = Yii::$app->getUser()->getId();
             $model = new Transaction();
             $accountNumber = UserAccount::find()->where(['user_id' => [$user]])->all();
+            $recipient = UserAccount::find()->where(['account_number' => [$_POST['recipient']?? null]])->one();
 
-            if(!empty($_POST['recipient']) && !empty($_POST['transaction_value'])) {
-                $model->transact( $_POST['checkedAccount'], $_POST['recipient'], $_POST['transaction_value'], true);
-                $this->refresh();
+            $profit = findQuantity(Transaction::find()->where(['recipient' => [$_POST['checkedAccount'] ?? null]])->all());
+            $decrease = findQuantity(Transaction::find()->where(['account_number' => [$_POST['checkedAccount'] ?? null]])->all());
+            $balance = findBalance($profit, $decrease);
+
+            if($recipient && !empty($_POST['transaction_value']) && $balance >= $_POST['transaction_value'] && !empty($_POST['checkedAccount'])) {
+                    $model->transact( $_POST['checkedAccount'], $_POST['recipient'], $_POST['transaction_value'], true);
+                    $this->refresh();
             }
             else{
-                //return $this->goBack();
+                //
             }
         }
         return $this->render('transaction' , compact('accountNumber', 'model'));
+    }
+
+    public function actionDeposit()
+    {
+        $user = Yii::$app->getUser()->getId();
+        $model = new Transaction();
+        $accountNumber = UserAccount::find()->where(['user_id' => [$user]])->all();
+        if(!empty($_POST['deposit_value']) && !empty($_POST['checkedAccount'])) {
+            $model->transact( 0,  $_POST['checkedAccount'], $_POST['deposit_value'], true);
+            $this->refresh();
+        }
+        else{
+            //
+        }
+        return $this->render('deposit', compact('accountNumber', 'model'));
     }
 }

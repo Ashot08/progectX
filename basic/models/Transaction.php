@@ -31,6 +31,7 @@ class Transaction extends ActiveRecord
             [
                 ['recipient', 'transaction_value'],  'trim'
             ],
+            ['transaction_value','integer', 'min'=>1],
         ];
     }
 
