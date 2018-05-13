@@ -14,6 +14,7 @@ use app\models\UserAccount;
 use Yii;
 use app\models\RegistrationForm;
 use app\models\User;
+use yii\helpers\Url;
 
 class HomeController extends AppController
 {
@@ -98,7 +99,17 @@ class HomeController extends AppController
             if($recipient && !empty($_POST['transaction_value']) && $balance >= $_POST['transaction_value'] && !empty($_POST['checkedAccount'])) {
                     $model->transact( $_POST['checkedAccount'], $_POST['recipient'], $_POST['transaction_value'], true);
                     $this->refresh();
+                Yii::$app->session->setFlash('success', 'Перевод выполнен успешно');
+                return goPage(Url::to(['home/transaction']));
             }
+            elseif (!empty($_POST) && !$recipient){
+                Yii::$app->session->setFlash('error', 'Ошибка, счет получателя не существует');
+                return goPage(Url::to(['home/transaction']));
+            }
+            elseif(!empty($_POST) && (empty($_POST['checkedAccount']) || empty($_POST['transaction_value']))){
+                Yii::$app->session->setFlash('error', 'Ошибка, не выбран счет или не заполнены поля');
+                return goPage(Url::to(['home/transaction']));
+                }
             else{
                 //
             }
@@ -114,10 +125,29 @@ class HomeController extends AppController
         if(!empty($_POST['deposit_value']) && !empty($_POST['checkedAccount'])) {
             $model->transact( 0,  $_POST['checkedAccount'], $_POST['deposit_value'], true);
             $this->refresh();
+            Yii::$app->session->setFlash('success', 'Платеж принят');
+            return goPage(Url::to(['home/deposit']));
+        }
+        elseif(!empty($_POST) && (empty($_POST['deposit_value']) || empty($_POST['checkedAccount']))){
+            Yii::$app->session->setFlash('error', 'Ошибка, проверьте правильность ввода данных');
+            return goPage(Url::to(['home/deposit']));
         }
         else{
             //
         }
         return $this->render('deposit', compact('accountNumber', 'model'));
+    }
+    public function actionTransactionHistory()
+    {
+        if (!\Yii::$app->user->can('watch show')) {
+            Yii::$app->session->setFlash('success', 'Ты не юзер, и уж явно не админ');
+            return $this->goBack();
+        }
+        else {
+            $user = Yii::$app->getUser()->getId();
+            $model = new Transaction();
+            $accountNumber = UserAccount::find()->where(['user_id' => [$user]])->all();
+            return $this->render('transactionHistory', compact('accountNumber', 'model'));
+        }
     }
 }

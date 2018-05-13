@@ -26,3 +26,8 @@ function findQuantity($query)
     }
     return $summ;
 }
+
+function goPage($url)
+{
+    return Yii::$app->getResponse()->redirect($url);
+}

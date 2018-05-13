@@ -20,7 +20,7 @@ use yii\helpers\Url;
         <ul>
             <li class="panel panel-heading"><a href="<?php echo Url::to(['home/transaction'])?>">Переводы</a></li>
             <li class="panel panel-heading"><a href="<?php echo Url::to(['home/deposit'])?>">Пополнить счет</a></li>
-            <li class="panel panel-heading"><a href="#">История транзакций</a></li>
+            <li class="panel panel-heading"><a href="<?php echo Url::to(['home/transaction-history'])?>">История транзакций</a></li>
             <li class="panel panel-heading"><a href="#">Справочная информация</a></li>
         </ul>
     </div>
